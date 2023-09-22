@@ -10,11 +10,11 @@ require (
 	github.com/gsora/fidati v0.0.0-20220824075547-eeb0a5f7d6c3
 	github.com/transparency-dev/armored-witness-boot v0.0.0-20230904140406-e2e16c7665b7
 	github.com/usbarmory/GoTEE v0.0.0-20230914094934-f4f769daa5a9
-	github.com/usbarmory/tamago v0.0.0-20230922151120-1f76695abebe
 	github.com/usbarmory/armory-boot v0.0.0-20230922092524-e66d926bc36c
 	github.com/usbarmory/crucible v0.0.0-20230721112227-63d5e1f2db77
 	github.com/usbarmory/imx-usbnet v0.0.0-20230626092818-ef791923688e
 	github.com/usbarmory/imx-usbserial v0.0.0-20230503192150-40b6298b31f8
+	github.com/usbarmory/tamago v0.0.0-20230922151120-1f76695abebe
 	golang.org/x/crypto v0.12.0
 	google.golang.org/protobuf v1.30.0
 	gvisor.dev/gvisor v0.0.0-20230614190805-57027c7d31f8
