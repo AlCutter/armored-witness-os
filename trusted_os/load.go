@@ -15,6 +15,8 @@
 package main
 
 import (
+	"bytes"
+	"debug/elf"
 	"fmt"
 	"log"
 
@@ -54,6 +56,11 @@ func loadApplet(elf []byte, ctl *controlInterface) (ta *monitor.ExecCtx, err err
 	if ta, err = monitor.Load(image.Entry(), image.Region, true); err != nil {
 		return nil, fmt.Errorf("SM could not load applet: %v", err)
 	}
+	ta.SafeMemoryLow, err = elfExtent(image.ELF)
+	if err != nil {
+		return nil, fmt.Errorf("SM could not determine ELF extent: %v", err)
+	}
+	log.Printf("SM applet extent is 0x%x", ta.SafeMemoryLow)
 
 	log.Printf("SM applet loaded addr:%#x entry:%#x size:%d", ta.Memory.Start(), ta.R15, len(elf))
 
@@ -74,6 +81,22 @@ func loadApplet(elf []byte, ctl *controlInterface) (ta *monitor.ExecCtx, err err
 	go run(ta)
 
 	return
+}
+
+func elfExtent(e []byte) (uint, error) {
+	f, err := elf.NewFile(bytes.NewReader(e))
+	if err != nil {
+		return 0, err
+	}
+	defer f.Close()
+
+	extent := uint64(0)
+	for _, p := range f.Progs {
+		if pEnd := p.Paddr + p.Memsz; pEnd > extent {
+			extent = pEnd
+		}
+	}
+	return uint(extent), nil
 }
 
 func run(ctx *monitor.ExecCtx) (err error) {
